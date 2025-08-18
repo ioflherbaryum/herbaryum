@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İbrahim Önal Fen Lisesi Herbaryum Projesi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f0f4f0; }
+        .plant-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .plant-card { transition: all 0.3s ease; }
+        .team-member:hover { transform: translateY(-5px); }
+        .image-comparison { position: relative; width: 100%; height: 200px; overflow: hidden; }
+        .image-comparison img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; }
+        .image-comparison .micro-view { opacity: 0; }
+        .image-comparison:hover .micro-view { opacity: 1; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-green-700 to-emerald-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <img src="images/book.png" alt="" class="h-20 mr-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <div>
+                    <h1 class="text-2xl font-bold">İbrahim Önal Fen Lisesi</h1>
+                    <p class="text-sm text-green-100">Herbaryum Projesi</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Proje Ekibi -->
+        <div class="bg-gradient-to-r from-green-600 to-emerald-500 rounded-lg shadow-md p-6 mb-8 text-white">
+            <h2 class="text-xl font-bold mb-4">Proje Ekibimiz</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div class="team-member bg-white bg-opacity-20 rounded-lg p-3 text-center">
+                    <div class="w-16 h-16 mx-auto bg-green-800 rounded-full flex items-center justify-center mb-2">
+                        <span class="text-xl font-bold">SB</span>
+                    </div>
+                    <h3 class="font-medium">Serpil Barış</h3>
+                </div>
+                <div class="team-member bg-white bg-opacity-20 rounded-lg p-3 text-center">
+                    <div class="w-16 h-16 mx-auto bg-green-800 rounded-full flex items-center justify-center mb-2">
+                        <span class="text-xl font-bold">Bİ</span>
+                    </div>
+                    <h3 class="font-medium">Beren İyisoy</h3>
+                </div>
+                <div class="team-member bg-white bg-opacity-20 rounded-lg p-3 text-center">
+                    <div class="w-16 h-16 mx-auto bg-green-800 rounded-full flex items-center justify-center mb-2">
+                        <span class="text-xl font-bold">YE</span>
+                    </div>
+                    <h3 class="font-medium">Yağmur Elif GÜLER</h3>
+                </div>
+                <div class="team-member bg-white bg-opacity-20 rounded-lg p-3 text-center">
+                    <div class="w-16 h-16 mx-auto bg-green-800 rounded-full flex items-center justify-center mb-2">
+                        <span class="text-xl font-bold">ŞBS</span>
+                    </div>
+                    <h3 class="font-medium">Şahan Baturay Sönmez</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- İstatistikler -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-green-500">
+                <h3 class="text-gray-500 text-sm">Toplam Bitki</h3>
+                <p class="text-2xl font-bold" id="total">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                <h3 class="text-gray-500 text-sm">Familya Sayısı</h3>
+                <p class="text-2xl font-bold" id="familyCount">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-yellow-500">
+                <h3 class="text-gray-500 text-sm">Cins Sayısı</h3>
+                <p class="text-2xl font-bold" id="genusCount">0</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-purple-500">
+                <h3 class="text-gray-500 text-sm">Son Eklenen</h3>
+                <p class="text-2xl font-bold" id="lastAdded">--</p>
+            </div>
+        </div>
+
+        <!-- Filtre ve Arama -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-8 flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
+            <input id="searchInput" type="text" placeholder="Bitki ara..." class="flex-grow pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            <select id="familyFilter" class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="">Tüm Familyalar</option>
+            </select>
+            <select id="genusFilter" class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="">Tüm Cinsler</option>
+            </select>
+        </div>
+
+        <!-- Bitki Kartları -->
+        <div id="plantsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+        <!-- Detay Modal -->
+        <div id="plantDetailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 id="modalPlantName" class="text-2xl font-bold text-green-800"></h2>
+                        <button id="closeModal" class="text-gray-500 hover:text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <img id="modalImage" src="" alt="" class="w-full mb-4" />
+                            <img id="modalMicroImage" src="" alt="Mikroskobik" class="w-full mb-4" />
+                        </div>
+                        <div>
+                            <p><strong>Familya:</strong> <span id="modalFamilya"></span></p>
+                            <p><strong>Cins:</strong> <span id="modalCins"></span></p>
+                            <p><strong>Tür:</strong> <span id="modalTur"></span></p>
+                            <p><strong>Türkçe Adı:</strong> <span id="modalTurkceAd"></span></p>
+                            <p><strong>Eklenme:</strong> <span id="modalTarih"></span></p>
+                            <p><strong>Konum:</strong> <span id="modalKonum"></span></p>
+                            <p><strong>Toplayanlar:</strong> <span id="modalToplayanlar"></span></p>
+                            <div class="bg-gray-100 rounded-lg p-4 mt-4"><h3 class="font-medium text-gray-800 mb-2">Notlar ve Özellikler</h3><p id="modalNotes" class="text-gray-600"></p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-green-800 text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <img src="images/logo okul.jpeg" alt="" width="50px"" class="mb-3" style="border-radius: 10%;" >
+                    <h2 class="text-xl font-bold">İbrahim Önal Fen Lisesi</h2>
+                    <p class="text-sm text-green-200">Herbaryum Projesi &copy; 2025</p>
+                    
+                </div>
+                <div class="flex flex-col md:flex-row items-center">
+                    <p class="text-sm text-green-200 mb-0 md:mb-0 md:mr-4">Proje Ekibi: Yağmur Elif, Elif Güler, Beren İyisoy, Serpil Barış, Şahan Baturay Sönmez</p>
+                    <div class="flex flex-col md:flex-row items-center">
+                        <a href="#" class="text-green-200 hover:text-white">Hakkında</a>
+                        <a href="#" class="text-green-200 hover:text-white">İletişim</a>
+                        <a href="#" class="text-green-200 hover:text-white">Yardım</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+  
+
+    <script>
+        // Bitki verisi
+        const plantData = [
+            { familya:'Zygophyllaceae', cins:'Tribulus', tur:'terrestris', turkceAd:'Eşek dikeni', konum:'', toplayanlar:'', notes:'', image:'images/eşek dikeni.jpeg', microImage:'', date:'' },
+            { familya:'Poaceae', cins:'Elymus', tur:'repens (L.)Gould', turkceAd:'Sabankıran', konum:'Üçbeyli köyü kırsalı', toplayanlar:'Yağmur Elif GÜLER', notes:'Kökü pişirilerek tüketilebilir ya da öğütülerek ekmek yapımında kullanılır. Kökü kavrularak kahve olarak içilmiştir. Genç yaprak ve sürgünleri yenilmektedir. Böbrek, karaciğer ve idrar rahatsızlıklarının tedavisinde kullanılmıştır. Kökü iltihap giderici, iştah açıcı, yatıştırıcı, idrar söktürücü, taş düşürücü ve toniktir. İdrar söktürücüdür ve bu nedenle uzun süre kullanımı potasyum eksikliğine neden olur.', image:'images/zivgiren.jpeg', microImage:'images/sabankıran preslli.jpg', date:'14.05.2025' },
+            { familya:'Poaceae', cins:'Setaria', tur:'verticillata', turkceAd:'Yapışkan otu', konum:'', toplayanlar:'', notes:'', image:'images/yapışkan otu.jpeg', microImage:'', date:''},
+            { familya:'Poaceae', cins:'Echinochloa', tur:'crus-galli', turkceAd:'Kanyaş otu', konum:'', toplayanlar:'', notes:'', image:'images/kanyaş otu.jpeg', microImage:'', date:''},
+            { familya:'Asteraceae', cins:'Sonchus', tur:'oleraceus', turkceAd:'Sarı diken', konum:'', toplayanlar:'', notes:'', image:'images/sarı diken.jpeg', microImage:'', date:''},
+            { familya:'Gramineae', cins:'Cynodon', tur:'dactylon', turkceAd:'Ayrık otu', konum:'Üçbeyli köyü girişi', toplayanlar:'Yağmur Elif Güler', notes:'İdrar arttırıcı, taş düşürücü, müsil olarak kullanılmaktadır. Kandaki zehirli maddeleri temizleyici özelliğe sahiptir. Ateşli hastalıklarda hastaya sakinleştirici olarak verilir. Yan etkisi olmaması sebebi ile ayrık otu prostata büyümelerinde kullanılmakta olduğu kayıtlıdır.', image:'images/Ayrık Otu.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Rubiaceae', cins:'Galium', tur:'aparine', turkceAd:'Yoğurt otu', konum:'Üçbeyli köyü girişi', toplayanlar:'Yağmur Elif Güler', notes:'İştah açıcı, idrar artırıcı, hafif kabız yapıcı, yatıştırıcı, idrar artırıcı, safra arttırıcı.', image:'images/Yoğurt otu.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Solanaceae', cins:'Solanum', tur:'nigrum', turkceAd:'Köpek üzümü', konum:'', toplayanlar:'', notes:'', image:'images/köpek üzümü.jpeg', microImage:'', date:''},
+            { familya:'Umbelliferae', cins:'Sancus', tur:'asper', turkceAd:'Sütleğen', konum:'Üçbeyli köyü kırsalı', toplayanlar:'Yağmur Elif GÜLER', notes:'Sütü rezin, kauçuk ve nişasta taşımaktadır. Kuvvetli müshil etkiye sahiptir. Çok tahriş edici olduğundan ancak haricen kullanılmalıdır. Anadolunun bazı yörelerinde sütü bal veya incir içinde, bir defada 2-3 damla süt olmak üzere, dahilen müshil olarak alınmaktadır. Çok tahriş edici olması nedeniyle bu şekilde kullanılışı tehlikelidir. Haricen siğillere karşı ve romatizma ağrılarında kızartıcı ve ağrı giderici olarak kullanılabilir.', image:'images/sütleğen.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Poaceae', cins:'Avena', tur:'sativa', turkceAd:'Yulaf', konum:'', toplayanlar:'', notes:'', image:'images/yulaf.jpeg', microImage:'', date:''},
+            { familya:'Poaceae', cins:'Alopecurus', tur:'pratensis', turkceAd:'Kuş otu', konum:'', toplayanlar:'', notes:'', image:'images/kuş otu.jpeg', microImage:'', date:''},
+            { familya:'Lamiaceae', cins:'Lamium', tur:'amplexicaule', turkceAd:'Asker çiçeği', konum:'', toplayanlar:'', notes:'', image:'images/asker çiçeği.jpeg', microImage:'', date:''},
+            { familya:'Amaranthaceae', cins:'Chenopodium', tur:'album', turkceAd:'Tatala', konum:'', toplayanlar:'', notes:'', image:'images/tatala.jpeg', microImage:'', date:'' },
+            { familya:'Amaranthaceae', cins:'Chenopodium', tur:'murale', turkceAd:'Sirken otu', konum:'', toplayanlar:'', notes:'', image:'images/sirken.jpeg', microImage:'', date:''},
+            { familya:'Brassicaceae', cins:'Sinapis', tur:'arvensis', turkceAd:'Hardal', konum:'Üçbeyli köyü çıkışı', toplayanlar:'Yağmur Elif Güler', notes:'Dahilen nadiren iştah açıcı olarak kullanılır. Haricen hardal lapası, hardal yakısı veya hardal banyosu şeklinde, kanı cilde toplamak ve ağrı kesmek için kullanılır. Sofra hardalı olarak bilinen baharatın terkibine girer.', image:'images/hardal.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Asteraceae', cins:'Silybum', tur:'marianum', turkceAd:'Deve dikeni', konum:'Üçbeyli köyü girişi', toplayanlar:'Yağmur Elif GÜLER', notes:'Gövdesi soyularak yenilmesi kuvvet verici, Tohumları; Karaciğer rahatsızlıklarına karşı öğütülüp bala karıştırılarak kullanılmaktadır. Tansiyon yükseltici etkisi de vardır. ', image:'images/deve dikeni.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Umbelliferae', cins:'Oenanthe', tur:'pimpinelloides', turkceAd:'Kazayağı', konum:'Üçbeyli köyü girişi', toplayanlar:'Beren İYİSOY', notes:'Çiçekli dallar idrar arttırıcı ve müshil.', image:'images/kazayağı.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Malvaceae', cins:'Malva', tur:'sylvestris', turkceAd:'Ebegümeci', konum:'Üçbeyli köyü girişi', toplayanlar:'Beren İYİSOY', notes:'Taşıdığı müsilaj nedeniyle, diğer müsilajlı droglar gibi, koruyucu ve yumuşatıcı bir etkiye sahiptir. Solunum ve sindirim sistemi tahrişleri ve iltihaplarında koruyucu olarak çok kullanılır. Taze yapraklarından hazırlanan lapa, cilt üzerindeki çıban ve yaraların ağrılarını dindirmek için, tülbent arasında, deri üzerine konulur. Genç bitkiler sebze olarak kullanılır.', image:'images/Ebegümeci.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Papaveraceae', cins:'Papaver', tur:'rhoeas', turkceAd:'Gelincik', konum:'Üçbeyli köyü kırsalı', toplayanlar:'Beren İYİSOY', notes:' Şurup yapımında 100 gr. kuru gelincik çiçeğinin yaprakları 1 lt su ve 2 kg toz şekerle kaynatılarak hazırlanan bu şurup bebeklerde ki bronşit tedavisinde kullanılırr. Çayı daha çok sakinleştirici, öksürük kesici, göğüs yumuşatıcı, soğuk algınlığı, nezle, bronşit ve nefes darlığı gibi rahatsızlıklarda kullanımı önerilmektedir. Kanayan yere 43 dövülmüş yaprak konulması ile kan durdurucu olduğu, su ve zeytinyağı ile kaynatılıp süzülen yağının yanık tedavisinde yara iyileştirici olarak kullanıldığı söylenmektedir. ', image:'images/gelincik.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Polygonaceae', cins:'Rumex', tur:'acetocella ', turkceAd:'Labada', konum:'Üçbeyli köyü kırsalı', toplayanlar:'Şahan Baturay SÖNMEZ', notes:'Köklerinden kuvvet verici müshil olarak, taze yapraklarından ise çıban egzama tedavisinde yararlanılır (Anabritannica, c.20, s. 163). Labadanın sıtmadan koruyucu, safra akışını kolaylaştırıcı ve barsak içeriğini yumuşatıcı etkileri vardır. Ayrıca antioksidan olarak kullanıldığı da bilinmektedir. Hayvanların safra ile ilgili sorunları olduğunda veya kabızlık ve deri hastalıkları gibi problemlerinde kullanılır. (Alpınar, 2009, s.335)', image:'images/labada.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Asteraceae', cins:'Taraxacum', tur:'officinale', turkceAd:'Karahindiba', konum:'Kayabaşı yakını yol kenarı', toplayanlar:'Yağmur Elif GÜLER', notes:'Karahindiba, safra üretimini artırarak sindirimi kolaylaştırır, karaciğer fonksiyonlarını destekler ve toksinlerin atılmasına yardımcı olur.İçeriğindeki müsilaj ve lifler sayesinde sindirimi düzenler, kabızlığı önler ve bağırsak hareketlerini destekler.Böbreklerin çalışmasını teşvik eder, vücuttaki fazla suyun atılmasını sağlar, ödemlerin giderilmesine yardımcı olur.İçindeki fenolik bileşikler ve flavonoidler sayesinde hücreleri serbest radikallerin zararından korur, iltihaplanmayı azaltır.', image:'images/karahindiba.jpg', microImage:'', date:'20.05.2025'},
+            { familya:'Asteraceae', cins:'Sonchus', tur:'oleraceus L.', turkceAd:'Eşek Marulu', konum:'Üçbeyli köyü kırsalı', toplayanlar:'Şahan Baturay Sönmez', notes:'Yaprakları süt arttırıcı, kuvvet verici, idrar arttırıcı ve ateş düşürücü. Ege bölgesinde, salata halinde, sebze olarak yenir.', image:'images/Eşek Marulu.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Urticaceae', cins:'Urtica', tur:'pulifera', turkceAd:'ısırgan Otu', konum:'Üçbeyli köyü girişi', toplayanlar:'Beren İYİSOY', notes:'Yaprak veya kök dahilen kan temizleyici, idrar arttırıcı ve iştah açıcı olarak kullanılır. Taze bitki, romatizma ağrılarını gidermek için, ağrıyan yerlere sürülerek tahriş yapılır ve kan toplanması sağlanır. Bitkiden elde edilen bazı fraksiyonların antikoagülan bir etkiye sahip bulunduğu gösterilmiştir.”', image:'images/Isırgan.jpg', microImage:'', date:'14.05.2025'},
+            { familya:'Asteraceae', cins:'Centaurea', tur:'solstitialis', turkceAd:'Çakır Dikeni', konum:'Üçbeyli köyü kırsalı', toplayanlar:'Beren İYİSOY', notes:'Türk halk tıbbında ülser hastalığının tedavisinde kullanılmıştır. Bir laboratuvar çalışmasında, çakırdikeni bitkisinin çiçekleri taze ya da kuru formlarının sulu ekstreleri ağız yoluyla sıçanlara verildiğinde antiülserojenik aktivite göstermiştir. Keçiler bu bitkiyi genellikle dikenli evrelerinden önce yerler fakat atlar tarafından dikenli evrede tüketildiğinde beyin lezyonlarına ve “çiğneme hastalığı” denilen bir çeşit sinir sendromuna sebep olduğu rapor edilmiştir.', image:'images/çakır dikeni.jpg', microImage:'', date:'14.05.2025'},
+            { familya:'Asteraceae', cins:'Leucanthemum', tur:'vulgare', turkceAd:'Beyaz papatya', konum:'Üçbeyli köyü merası', toplayanlar:'Beren İYİSOY', notes:'İdrar çoğaltıcı, iştah açıcı, yatıştırıcı,gaz ve safra söktürücü etkileri bulunmaktadır. Haricen infüzyon boğaz iltihaplarına karşı gargara halinde, iltihaplı yaralara (basur gibi) karşı ise pansuman halinde, ağrı kesici ve yara iyi edici olarak kullanılmaktadır', image:'images/beyaz papatya.jpeg', microImage:'', date:'14.05.2025'},
+            { familya:'Rhamnaceae', cins:'Paliurus', tur:'spina-christi', turkceAd:'Karaçalı', konum:'Dallıca orman içi', toplayanlar:'Beren İYİSOY', notes:'Zengin vitamin ve fenolik içerik, hücre hasarını önler; kronik iltihapları yatıştırır.Yüksek C vitamini ve flavonoidlerle bağışıklığı güçlendirir.Kolesterol düzenleyici  fitosteroller ve omega yağları ile kalp-damar sistemine destek olur; karaciğer koruyucu etki gösterir. Omega‑7 (palmitoleik asit), antioksidanlar ve E vitamini ile cilt bariyerini güçlendirir, yara ve yanıklarda hızlı iyileşme sağlar', image:'images/Karaçalı.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Asparagaceae', cins:'Ruscus', tur:'aculeatus L.', turkceAd:'Tavşanmemesi / Kokina', konum:'Dallıca orman içi', toplayanlar:'Beren İYİSOY', notes:'İdrar söktürücü ve taş düşürücüdür. Kan dolaşımını harekete geçirir. Ödem azaltıcı etkisi vardır. Meyveleri müshil etkilidir. Müshil, iştah açıcı, ateş düşürücü, arındırıcı, terlemeyi arttırıcı, idrar söktürücü ve damar büzücüdür. Hemoroit tedavisinde harici olarak uygulanır.Yüksek tansiyon tedavisinde kullanıldığında dikkatli olunması gerekir.', image:'images/Kokina.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Rosaceae', cins:'Prunus', tur:'spinosa', turkceAd:'Güvem Eriği', konum:'Dallıca orman içi', toplayanlar:'Beren İYİSOY', notes:' Meyvelerin direk tüketilmesi yada bitki herbasının çayları İshal ve, gut tedavisinde kullanılabilir. Meyvelerinden reçel veya marmelet yapılabilmektedir. ', image:'images/güvem eriği.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Rosaceae', cins:'Rubus', tur:'caesius', turkceAd:'Böğürtlen', konum:'Dallıca köyü orman içi', toplayanlar:'Yağmur Elif GÜLER', notes:'Dahilen, infüzyon veya dekoksiyon (905) halinde, kabız, kuvvet verici, idrar söktürücü ve şeker hastalığına karşı kullanılır. Bademcik iltihaplarında dekoksiyonu gargara halinde kullanılmaktadır Yara iyi edici olarak, kurutulmuş yaprak ince toz haline getirilir ve bu toz yara üzerine ekilir. Meyvenin ezilmesi ile elde edilen usare de kabız etkiye sahiptir. Dahilen veya gargara halinde kullanılır.', image:'images/Böğürtlen.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Lamiaceae', cins:'Mentha', tur:'pulegium', turkceAd:'Yabani Nane (Yarpuz Otu)', konum:'Dallıca', toplayanlar:'Beren İYİSOY', notes:'Bilhassa sinirsel kökenli mide bulantılarını kesici, gaz söktürücü ve koku verici olarak kullanılmaktadır. ', image:'images/Yarpuz.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Fagaceae', cins:'Quercus', tur:'robur L.', turkceAd:'Meşe', konum:'Dallıca', toplayanlar:'Şahan Baturay Sönmez', notes:'Boğaz hastalıklarında, infüzyon ile gargara yapılır. Bazı maddeler (alkaloitler, bakır ve kurşun tuzları) ile zehirlenmelerde, hastaya meşe kabuğu veya mazı ile hazırlanmış infüzyonların içirilmesi çok faydalıdır. Bu droglardaki tanen, zehirli madde ile birleşerek onun kana geçmesini önler.', image:'images/Meşe.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Rosaceae', cins:'Crataegus', tur:'monogyna', turkceAd:'Alıç', konum:'Dallıca', toplayanlar:'Şahan Baturay Sönmez', notes:'Meyvelerinden reçel ve marmelat yapılmaktadır. Yaprakları kurutularak çay elde edilmiştir. Ayrıca çiçekleri tatlılarda ve şerbet yapımında kullanılmaktadır. Kalp yetmezliği durumunda başvurulmuştur. Antioksidan fitokimyasallara sahiptir. Bunun yanında meyvesi spazm çözücü, idrar söktürücü, yatıştırıcı, tonik ve damar genişleticidir.', image:'images/alıç.jpeg', microImage:'', date:'12.06.2025'},
+            { familya:'Chenepodiaceae', cins:'Chnepodium', tur:'album subsp.album', turkceAd:'Sirken', konum:'Dallıca', toplayanlar:'Şahan Baturay Sönmez', notes:'Çiçekli dallar idrar arttırıcı ve müshil. Salatası yapılarak tüketilmesi yaygındır', image:'images/sirken.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Cupressaceae', cins:'Cupresus', tur:'sempervirens', turkceAd:'Servi', konum:'Dallıca', toplayanlar:'Şahan Baturay Sönmez', notes:'Kabız, ateş düşürücü, terletici, idrar arttırıcı ve kan kesici etkileri bulunmaktadır. Haricen basura ve kokulu ayak terlemelerine karşı kullanılmaktadır. Eskiden beri, çocukların gece işemesine karşı kullanılır.', image:'images/Servi.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Asteraceae', cins:'Senecio', tur:'leucanthemifolius Poir.', turkceAd:'Sarı Papatya', konum:'Dallıca', toplayanlar:'Beren İyisoy', notes:' İdrar çoğaltıcı, iştah açıcı, yatıştırıcı, gaz ve safra söktürücü etkileri bulunmaktadır. Haricen infüzyon boğaz iltihaplarına karşı gargara halinde, iltihaplı yaralara (basur gibi) karşı ise pansuman halinde, ağrı kesici ve yara iyi edici olarak kullanılmaktadır.', image:'images/Sarı Papatya.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Rosaceae', cins:'Pyrus', tur:'elaeagnifolia', turkceAd:'Ahlat', konum:'Dallıca', toplayanlar:'Beren İyisoy', notes:'Lif içeriği sayesinde bağırsak hareketlerini düzenler, kabızlığı önlemeye yardımcı olur. Fenolik bileşikler hücreleri serbest radikallerin zararından korur.C vitamini ve flavonoidler bağışıklığı destekler.Potasyum içeriği kalp fonksiyonlarının düzenlenmesine katkı sağlar.Organik asitler ve lif kan şekeri düzenlemesinde yardımcı olabilir.', image:'images/Ahlat.jpg', microImage:'', date:'20.05.2025'},
+            { familya:'Lamiaceae', cins:'Thymbra', tur:'spicata L.', turkceAd:'Zahter', konum:'Dallıca', toplayanlar:'Beren İYİSOY', notes:'Bağışıklık sistemini destekler ve vücudun hastalıklara karşı korunmasına yardımcı olur.Lif içeriği bakımından zengin olan zahter sindirim sistemini düzenler, bağırsak sağlığının korunmasına destek olur.Kan şekeri üzerindeki olumlu etkileri nedeniyle diyabet hastaları tarafından doktor kontrolünde kullanılabilir. Anti-inflamatuar özelliğiyle vücuttaki iltihabı ve iltihaba bağlı gelişen semptomları azaltmaya yardımcı olur.', image:'images/Zahter.jpg', microImage:'', date:'20.05.2025'},
+            { familya:'Rosaceae', cins:'Rosa', tur:'canina', turkceAd:'Kuşburnu', konum:'Dallıca', toplayanlar:'Yağmur Elif GÜLER', notes:'Vücudun enfeksiyonlara karşı direncini artırır. Bağırsak hareketlerini düzenleyerek sindirimi kolaylaştırır. Kabızlık gibi sorunları önler ve bağırsak florasının sağlıklı kalmasına destek olur.  Kolesterol seviyelerini dengede tutarak damar sağlığını korur.', image:'images/kuş burnu.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Boraginaceae', cins:'Echium', tur:'vulgare', turkceAd:'Engerek Otu', konum:'Dallıca', toplayanlar:'Beren İyisoy', notes:' Yılan zehrine karşı panzehir olduğu sanılmaktadır. Terletici ve idrar söktürücüdür. Yaprak ve çiçekli gövdeler öksürük giderici, yatıştırıcı, terletici, idrar söktürücü ve afrodizyaktır. Demlendiğinde ateş, baş ağrısı ve göğüs ağrılarına iyi gelir. Ayrıca çıban tedavisinde suyu ilgili bölgeye uygulanır. Yapraklar zehirlidir ancak kaydedilmiş herhangi bir zehirlenme vakası yoktur. ', image:'images/Engerek otu.jpeg', microImage:'', date:'20.05.2025'},
+            { familya:'Oleaceae', cins:'Fraxinus', tur:'excelsior L.', turkceAd:'Adi Dişbudak', konum:'Muradiyesarnıç orman içi', toplayanlar:'Yağmur Elif Güler', notes:'Ham tohumlarından turşu yapılmıştır. Ayrıca yaprakları çaylara eklenmiştir. Tohumlarından mutfaklık yağ elde edilmiştir. Yapraklarından yeşil boya elde edilmektedir. Kabuk tanen bakımından zengindir. Ayrıca çeşitli ahşap mobilyaların yapımında kullanılmaktadır. Yapraklar büzücü, terletici, hafifçe idrar söktürücü, müshildir. Bunun yanında kabuk büzücü ve acı bir toniktir. Ayrıca kanatları da dahil olmak üzere tohumlar gaz giderici olarak kullanılmıştır. Geviş getiren hayvanlar için zehirlidir. Diğer yandan hassas insanlarda dermatite neden olabileceği rapor edilmiştir.', image:'images/alıç.jpeg', microImage:'', date:'23.05.2025'},
+            { familya:'Guttiferae', cins:'Hypericum', tur:'perforatum', turkceAd:'Sarı Kantaron', konum:'Muradiye Sarnıç', toplayanlar:'Şahan Baturay Sönmez', notes:'Taşıdığı acı maddeler nedeniyle, hazmı kolaylaştırıcı ve iştah açıcı özelliklere sahiptir. Ateş düşürücü etkisi çok zayıftır. Bu sebepten bugün yalnız iştah açıcı ve hazmı kolaylaştırıcı olarak kullanılmaktadır.', image:'images/sarı kantaraon.jpeg', microImage:'', date:'23.05.2025'},
+            { familya:'Tiliaceae', cins:'Tilia', tur:'argentea', turkceAd:'Ihlamur', konum:'Muradiyesarnıç', toplayanlar:'Şahan Baturay Sönmez', notes:'Ihlamur, antioksidan özellikleri yüksek bir bitkidir. Bu antioksidanlar arasında özellikle kalp ve kardiyovasküler sistemde iltihaplanmaya karşı etkili olan quercetin de bulunur. Tiliroside ve kaempferol ise ıhlamur çayında yer alan ve serbest radikallerle savaşan, vücuttaki iltihaplanmayı önlemeye yardımcı olan diğer antioksidanlardır. Bu antioksidanlar sayesinde ıhlamur çayı, iltihaplanmanın neden olduğu kronik hastalıkların önlenmesine yardımcı olabilir.', image:'images/ıhkamur.jpeg', microImage:'', date:'23.05.2025'},
+        ];
+
+        // UI elemanları
+        const searchInput = document.getElementById('searchInput');
+        const familyFilter = document.getElementById('familyFilter');
+        const genusFilter = document.getElementById('genusFilter');
+        const totalEl = document.getElementById('total');
+        const familyCountEl = document.getElementById('familyCount');
+        const genusCountEl = document.getElementById('genusCount');
+        const lastAddedEl = document.getElementById('lastAdded');
+
+        // Filtreleme olayları
+        searchInput.addEventListener('input', applyFilters);
+        familyFilter.addEventListener('change', applyFilters);
+        genusFilter.addEventListener('change', applyFilters);
+
+        // Filtreleri uygula
+        function applyFilters() {
+            const s = searchInput.value.toLowerCase();
+            const f = familyFilter.value;
+            const g = genusFilter.value;
+            let filtered = plantData.filter(p => {
+                const matchS = !s || p.turkceAd.toLowerCase().includes(s) || p.cins.toLowerCase().includes(s) || p.familya.toLowerCase().includes(s);
+                const matchF = !f || p.familya === f;
+                const matchG = !g || p.cins === g;
+                return matchS && matchF && matchG;
+            });
+            loadPlants(filtered);
+        }
+
+        // Kartları yükle
+        function loadPlants(data = plantData) {
+            const container = document.getElementById('plantsContainer'); 
+            container.innerHTML = '';
+
+            // İstatistikleri güncelle
+            totalEl.textContent = data.length;
+            familyCountEl.textContent = new Set(data.map(p=>p.familya)).size;
+            genusCountEl.textContent = new Set(data.map(p=>p.cins)).size;
+            lastAddedEl.textContent = data.length ? data[data.length-1].date : '--';
+
+            if(!data.length) {
+                container.innerHTML = '<p class="text-center text-gray-500">Eşleşen bitki bulunamadı.</p>';
+                return;
+            }
+
+            data.forEach((p,i) => {
+                const card = document.createElement('div'); 
+                card.className='plant-card bg-white rounded-lg shadow-md overflow-hidden';
+                card.innerHTML = `
+                    <div class="image-comparison">
+                        <img src="${p.image}" alt="${p.turkceAd}" class="normal-view">
+                        <img src="${p.microImage}" alt="${p.turkceAd} Mikroskobik" class="micro-view">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-lg">${p.turkceAd}</h3>
+                            <button class="view-details text-green-600 hover:text-green-800 text-sm font-medium" data-id="${i}">Detaylar</button>
+                        </div>
+                        <p class="text-sm text-gray-600"><em>${p.cins} ${p.tur}</em></p>
+                        <p class="text-xs text-gray-500">Eklenme: ${p.date}</p>
+                    </div>`;
+                container.appendChild(card);
+            });
+
+            // her seferinde doğru data’yı kapat
+            attachDetailEvents(data);
+        }
+
+        // Detay modal eventleri
+       function attachDetailEvents(currentData) {
+            document.querySelectorAll('.view-details').forEach(btn => {
+                btn.onclick = () => {
+                    const p = currentData[btn.dataset.id]; // artık filtrelenmiş veri seti
+                    document.getElementById('modalPlantName').textContent = p.turkceAd;
+                    document.getElementById('modalImage').src = p.image;
+                    document.getElementById('modalMicroImage').src = p.microImage;
+                    document.getElementById('modalFamilya').textContent = p.familya;
+                    document.getElementById('modalCins').textContent = p.cins;
+                    document.getElementById('modalTur').textContent = p.tur;
+                    document.getElementById('modalTurkceAd').textContent = p.turkceAd;
+                    document.getElementById('modalTarih').textContent = p.date;
+                    document.getElementById('modalKonum').textContent = p.konum;
+                    document.getElementById('modalToplayanlar').textContent = p.toplayanlar;
+                    document.getElementById('modalNotes').textContent = p.notes;
+                    document.getElementById('plantDetailModal').classList.remove('hidden');
+                }
+            });
+            document.getElementById('closeModal').onclick = () => 
+                document.getElementById('plantDetailModal').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+            // Dropdownları doldur
+            const families=[...new Set(plantData.map(p=>p.familya))];
+            families.forEach(f=>familyFilter.insertAdjacentHTML('beforeend',`<option value="${f}">${f}</option>`));
+            const genera=[...new Set(plantData.map(p=>p.cins))];
+            genera.forEach(g=>genusFilter.insertAdjacentHTML('beforeend',`<option value="${g}">${g}</option>`));
+            loadPlants();
+        });
+    </script>
+</body>
+</html>

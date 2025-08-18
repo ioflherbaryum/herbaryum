@@ -1,0 +1,127 @@
+/* Genel Stiller */
+body {
+    font-family: 'Open Sans', sans-serif; /* Öneri: Open Sans */
+    margin: 0;
+    padding: 0;
+    background-color: #E8F5E9; /* Açık yeşil arka plan */
+    color: #333; /* Temel metin rengi */
+}
+
+.container {
+    width: 90%; /* Canva tasarımına daha yakın genişlik */
+    max-width: 1200px; /* Maksimum genişlik */
+    margin: 20px auto; /* Üstten ve alttan boşluk ve ortalama */
+    overflow: hidden;
+}
+
+/* Başlık (Header) Stili */
+header {
+    background-color: #2E7D32; /* Ana yeşil başlık */
+    color: white;
+    padding: 1em 0;
+    text-align: center; /* Başlığı ortala */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Ana İçerik (Main) Stili */
+main {
+    padding: 20px;
+}
+
+/* Proje Bilgileri Bölümü (Canva tasarımındaki üst bölüm) */
+.project-info {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px; /* Köşeleri yuvarlak yap */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+    display: flex; /* Öğeleri yan yana dizmek için */
+    justify-content: space-around; /* Öğeleri eşit aralıklarla yerleştir */
+    align-items: center; /* Dikeyde ortala */
+}
+
+.info-card {
+    text-align: center;
+}
+
+.info-card h2 {
+    color: #2E7D32;
+    margin-bottom: 5px;
+}
+
+.info-card p {
+    color: #777;
+    font-size: 0.9em;
+}
+
+/* Bitki Kartları Bölümü */
+.plant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Esnek grid */
+    gap: 20px;
+}
+
+.plant-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* İçeriğin taşımasını engelle */
+}
+
+.card-image {
+    background-color: #f0f0f0; /* Geçici görsel alanı */
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-content {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-content h3 {
+    color: #2E7D32;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.card-content p {
+    color: #555;
+    font-size: 0.9em;
+}
+
+.card-actions {
+    background-color: #f9f9f9;
+    padding: 10px;
+    text-align: center;
+}
+
+.card-actions button {
+    background: none;
+    border: 1px solid #2E7D32;
+    color: #2E7D32;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.card-actions button:hover {
+    background-color: #2E7D32;
+    color: white;
+}
+
+/* Altbilgi (Footer) Stili */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+    margin-top: 20px;
+}
